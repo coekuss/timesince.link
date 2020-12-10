@@ -7,6 +7,8 @@
     <style>
         body {
             margin: 0;
+            font-family: sans-serif;
+            font-style: italic;
         }
         #wrapper {
             display: grid;
@@ -14,10 +16,9 @@
             height: 100vh;
         }
         #content {
-            max-width: 1200px;
+            max-width: 1000px;
             font-size: 4em;
-            font-family: sans-serif;
-            font-style: italic;
+            padding: 0px 20px 0px 20px;
             text-align: center;
             color: white;
             text-shadow: 0px 0px 1.5px currentColor;
@@ -25,6 +26,79 @@
         .fadein {
             color: black !important;
             transition: color 2s;
+        }
+        #menulines {
+            float: left;
+            width: 75px;
+            position: fixed;
+            margin: 20px;
+            cursor: pointer;
+        }
+        svg {
+            stroke: black;
+            stroke-width: 9;
+            stroke-linecap: round;
+            stroke-dasharray: 0;
+            overflow: visible;
+            width: 100%;
+        }
+        #line1 {
+            transition: 0.2s;
+        }
+        #line2 {
+            margin: 10px 0px 10px 0px;
+        }
+        #line3 {
+            transition: 0.2s;
+        }
+        #menulines:hover #line1 {
+            transform: translateY(-6px);
+            transition: 0.2s;
+        }
+        #menulines:hover #line3 {
+            transform: translateY(6px);
+            transition: 0.2s;
+        }
+        #about {
+            position: absolute;
+            width: 75%;
+            max-width: 1000px;
+            height: 85%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 50px -10px black;
+            opacity: 0;
+            pointer-events: none;
+            font-size: 2em;
+            text-shadow: 0px 0px 1px currentColor;
+            padding: 0px 50px 0px 50px;
+            transition: opacity 0.1s;
+        }
+        .show {
+            opacity: 1 !important;
+            pointer-events: all !important;
+        }
+        #xbuttonline {
+            text-align: right;
+        }
+        #xbuttoncontainer {
+            display: inline-block;
+            text-align: right;
+            width: fit-content;
+            width: 100%;
+            margin-top: 30px;
+        }
+        #xbuttonclickable {
+            display: inline;
+            cursor: pointer;
+            width: fit-content;
+            padding: 5px;
+        }
+        #xbutton {
+            width: 30px;
+            stroke: black;
+            stroke-width: 60;
+            stroke-linecap: round;
         }
     </style>
     <script>
@@ -67,8 +141,12 @@
                 }
                 
             }
-            function cycleUnit() {
-                
+            function toggleAbout() {
+                if (document.getElementById("about").classList.contains("show")) {
+                    document.getElementById("about").classList.remove("show")
+                } else {
+                    document.getElementById("about").classList.add("show")
+                }
             }
             window.onload = function() {
                 document.getElementById("content").classList.add("fadein")
@@ -76,12 +154,48 @@
     </script>
 </head>
 <body>
+    <div id="menulines" onclick="toggleAbout()">
+        <svg id="line1" viewBox="0 0 168 33" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+            stroke-linejoin="round" stroke-miterlimit="2">
+            <path d="M0 32C9 32 19 0 28 0s19 32 28 32S75 0 84 0s19 32 28 32 19-32 28-32 19 32 28 32" fill="none" />
+        </svg>
+        <svg id="line2" viewBox="0 0 168 33" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+            stroke-linejoin="round" stroke-miterlimit="2">
+            <path d="M0 32C9 32 19 0 28 0s19 32 28 32S75 0 84 0s19 32 28 32 19-32 28-32 19 32 28 32" fill="none" />
+        </svg>
+        <svg id="line3" viewBox="0 0 168 33" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+            stroke-linejoin="round" stroke-miterlimit="2">
+            <path d="M0 32C9 32 19 0 28 0s19 32 28 32S75 0 84 0s19 32 28 32 19-32 28-32 19 32 28 32" fill="none" />
+        </svg>
+    </div>
+    
     <div id="wrapper">
+        <div id="about">
+            <div id="xbuttoncontainer">
+                <div id="xbuttonclickable" onclick="toggleAbout()">
+                    <svg id="xbutton" viewBox="0 0 305 305" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+                        stroke-linejoin="round" stroke-miterlimit="2">
+                        <path d="M305 0L0 305M0 0l305 305" fill="none" />
+                    </svg>
+                </div>
+            </div>
+            
+            <h2>timesince.link</h2>
+            <p>A tool made by <a href="https://coekuss.com/">Coekuss</a> to help you
+                 appreciate life events and new habits. Adding structure to your personal 
+                 progress. 
+            </p>
+            <p>The link contains all the info about your event so you can
+                bookmark it, send it to people, or whatever else. 
+            </p>
+        </div>
+
         <div id="content">
             <p>It has been</p>
             <p id="date"></p>
             <p>since</p>
             <p id="event"></p>
+            
         </div>
     </div>
 
