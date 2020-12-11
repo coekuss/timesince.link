@@ -36,9 +36,8 @@
         }
         svg {
             stroke: black;
-            stroke-width: 9;
+            stroke-width: 12;
             stroke-linecap: round;
-            stroke-dasharray: 0;
             overflow: visible;
             width: 100%;
         }
@@ -101,6 +100,42 @@
             stroke-width: 60;
             stroke-linecap: round;
         }
+        input {
+            min-height: fit-content;
+            border-radius: 10px;
+            border: 5px solid black;
+            font-family: sans-serif;
+            font-style: italic;
+            font-size: 0.7em;
+            padding: 10px;
+            text-shadow: 0px 0px 1.5px currentColor;
+        }
+        #generateLinkButton {
+            cursor: pointer;
+            background: none;
+            transition: transform 0.2s;
+            margin-top: 30px;
+        }
+        #generateLinkButton:hover {
+            transform: scale(1.05)
+        }
+        #userEvent {
+            resize: none;
+            overflow: visible;
+            width: 477px;
+            height: fit-content;
+            border-radius: 10px;
+            border: 5px solid black;
+            font-family: sans-serif;
+            font-style: italic;
+            font-size: 0.7em;
+            padding: 10px;
+            text-shadow: 0px 0px 1.5px currentColor;
+
+        }
+        br {
+            margin-bottom: 30px;
+        }
     </style>
     <script>
         function getQueryVariable(variable) {
@@ -111,47 +146,67 @@
                     if (pair[0] == variable) { return pair[1]; }
                 }
                 return (false);
+        }
+        function timeSinceDate(timeUnit, userDate) {
+            const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            const oneWeek = oneDay * 7
+            const oneMonth = oneDay * 30
+            const oneYear = oneDay * 365
+
+            const dateSplit = userDate.split("-")
+
+            // subtract 1 because Date() function has 0-indexed months
+            const userMonth = dateSplit[0] - 1 
+            const userDay = dateSplit[1]
+            const userYear = dateSplit[2]
+
+            const firstDate = new Date(userYear, userMonth, userDay);
+            const secondDate = Date.now();
+
+            const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+
+            switch(timeUnit) {
+                case "days":
+                    return diffDays + " days"
+                case "weeks":
+                    return Math.round(diffDays / 7) + " weeks"
+                case "months":
+                    return Math.round(diffDays / 30) + " months"
+                case "years":
+                    return Math.round(diffDays / 365) + " years"
             }
-            function timeSinceDate(timeUnit, userDate) {
-                const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-                const oneWeek = oneDay * 7
-                const oneMonth = oneDay * 30
-                const oneYear = oneDay * 365
-
-                const dateSplit = userDate.split("-")
-
-                // subtract 1 because Date() function has 0-indexed months
-                const userMonth = dateSplit[0] - 1 
-                const userDay = dateSplit[1]
-                const userYear = dateSplit[2]
-
-                const firstDate = new Date(userYear, userMonth, userDay);
-                const secondDate = Date.now();
-
-                const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
-
-                switch(timeUnit) {
-                    case "days":
-                        return diffDays + " days"
-                    case "weeks":
-                        return Math.round(diffDays / 7) + " weeks"
-                    case "months":
-                        return Math.round(diffDays / 30) + " months"
-                    case "years":
-                        return Math.round(diffDays / 365) + " years"
+            
+        }
+        function toggleAbout() {
+            if (document.getElementById("about").classList.contains("show")) {
+                document.getElementById("about").classList.remove("show")
+            } else {
+                document.getElementById("about").classList.add("show")
+            }
+        }
+        window.onload = function() {
+            if (window.location.search == "") {
+                document.getElementById("content").innerHTML = `
+                <form method="GET">
+                    <label for="event">What happened?</label><br>
+                    <textarea class="userText" id="userEvent" rows="2" name="e" required></textarea><br>
+                    <label for="date">When did it happen?</label><br>
+                    <input class="userText" id="userDate" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}" placeholder="M-D-YYYY" name="d" required><br>
+                    <input id="generateLinkButton" type="submit" value="Generate Link">
+                </form>
+                `;
+            } else {
+                document.getElementById("event").innerHTML = getQueryVariable("e").replace(/\+/g, " ");
+                if (getQueryVariable("u") == false) {
+                    document.getElementById("date").innerHTML = timeSinceDate("days", getQueryVariable("d"))
+                } else {
+                    document.getElementById("date").innerHTML = timeSinceDate(getQueryVariable("u"), getQueryVariable("d"))
                 }
                 
             }
-            function toggleAbout() {
-                if (document.getElementById("about").classList.contains("show")) {
-                    document.getElementById("about").classList.remove("show")
-                } else {
-                    document.getElementById("about").classList.add("show")
-                }
-            }
-            window.onload = function() {
-                document.getElementById("content").classList.add("fadein")
-            }
+            
+            document.getElementById("content").classList.add("fadein")
+        }
     </script>
 </head>
 <body>
@@ -199,11 +254,5 @@
             
         </div>
     </div>
-
-    <script>
-         document.getElementById("event").innerHTML = getQueryVariable("e").replace(/\+/g, " ")
-         document.getElementById("date").innerHTML = timeSinceDate(getQueryVariable("u"), getQueryVariable("d"))
-         
-    </script>
 </body>
 </html>
