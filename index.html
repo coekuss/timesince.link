@@ -58,21 +58,37 @@
             transform: translateY(6px);
             transition: 0.2s;
         }
-        #about {
+        #aboutwrapper {
+            display: grid;
+            place-items: center;
             position: absolute;
+            margin: none;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        #about {
             width: 75%;
-            max-width: 1000px;
-            min-height: fit-content;
             height: 85%;
+            max-width: 1000px;
+            overflow-y: auto;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0px 0px 50px -10px black;
-            opacity: 0;
-            pointer-events: none;
             font-size: 2em;
             text-shadow: 0px 0px 1px currentColor;
             padding: 0px 50px 0px 50px;
+            pointer-events: none;
+            opacity: 0;
             transition: opacity 0.1s;
+        }
+        #aboutHomeLink {
+            text-decoration: none;
+            color: black;
+            transition: letter-spacing 0.2s;
+        }
+        #aboutHomeLink:hover {
+            letter-spacing: 2px;
         }
         .show {
             opacity: 1 !important;
@@ -100,6 +116,9 @@
             stroke-width: 60;
             stroke-linecap: round;
         }
+        #content p {
+            margin: 30px 0px 30px 0px;
+        }
         input {
             min-height: fit-content;
             border-radius: 10px;
@@ -110,20 +129,11 @@
             padding: 10px;
             text-shadow: 0px 0px 1.5px currentColor;
         }
-        #generateLinkButton {
-            cursor: pointer;
-            background: none;
-            transition: transform 0.2s;
-            margin-top: 30px;
-        }
-        #generateLinkButton:hover {
-            transform: scale(1.05)
-        }
         #userEvent {
             resize: none;
             overflow: visible;
             width: 477px;
-            height: fit-content;
+            min-height: fit-content;
             border-radius: 10px;
             border: 5px solid black;
             font-family: sans-serif;
@@ -133,8 +143,14 @@
             text-shadow: 0px 0px 1.5px currentColor;
 
         }
-        br {
-            margin-bottom: 30px;
+        #generateLinkButton {
+            cursor: pointer;
+            background: none;
+            transition: transform 0.2s;
+            margin-top: 30px;
+        }
+        #generateLinkButton:hover {
+            transform: scale(1.05)
         }
     </style>
     <script>
@@ -184,23 +200,29 @@
                 document.getElementById("about").classList.add("show")
             }
         }
+        // use this function to round to 1 decimal place
+        // https://stackoverflow.com/questions/7342957/how-do-you-round-to-1-decimal-place-in-javascript
+        function round(value, precision) {
+            var multiplier = Math.pow(10, precision || 0);
+            return Math.round(value * multiplier) / multiplier;
+        }
         window.onload = function() {
             if (window.location.search == "") {
                 document.getElementById("content").innerHTML = `
                 <form method="GET">
-                    <label for="event">What happened?</label><br>
-                    <textarea class="userText" id="userEvent" rows="2" name="e" required></textarea><br>
-                    <label for="date">When did it happen?</label><br>
-                    <input class="userText" id="userDate" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}" placeholder="M-D-YYYY" name="d" required><br>
-                    <input id="generateLinkButton" type="submit" value="Generate Link">
+                    <p><label for="event">What happened?</label></p>
+                    <p><textarea class="userText" id="userEvent" rows="2" name="e" required></textarea></p>
+                    <p><label for="timesince">When did it happen?</label></p>
+                    <p><input class="userText" id="userDate" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}" placeholder="M-D-YYYY" name="d" required></p>
+                    <p><input id="generateLinkButton" type="submit" value="Generate Link"></p>
                 </form>
                 `;
             } else {
                 document.getElementById("event").innerHTML = getQueryVariable("e").replace(/\+/g, " ");
                 if (getQueryVariable("u") == false) {
-                    document.getElementById("date").innerHTML = timeSinceDate("days", getQueryVariable("d"))
+                    document.getElementById("timesince").innerHTML = timeSinceDate("days", getQueryVariable("d"))
                 } else {
-                    document.getElementById("date").innerHTML = timeSinceDate(getQueryVariable("u"), getQueryVariable("d"))
+                    document.getElementById("timesince").innerHTML = timeSinceDate(getQueryVariable("u"), getQueryVariable("d"))
                 }
                 
             }
@@ -224,31 +246,35 @@
             <path d="M0 32C9 32 19 0 28 0s19 32 28 32S75 0 84 0s19 32 28 32 19-32 28-32 19 32 28 32" fill="none" />
         </svg>
     </div>
-    
-    <div id="wrapper">
+
+    <div id="aboutwrapper">
         <div id="about">
             <div id="xbuttoncontainer">
                 <div id="xbuttonclickable" onclick="toggleAbout()">
-                    <svg id="xbutton" viewBox="0 0 305 305" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
-                        stroke-linejoin="round" stroke-miterlimit="2">
+                    <svg id="xbutton" viewBox="0 0 305 305" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
+                        clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2">
                         <path d="M305 0L0 305M0 0l305 305" fill="none" />
                     </svg>
                 </div>
             </div>
-            
-            <h2>timesince.link</h2>
+        
+            <h2><a href="index.html" id="aboutHomeLink">timesince.link</a></h2>
             <p>A tool made by <a href="https://coekuss.com/">Coekuss</a> to help you
-                 appreciate life events and new habits. Adding structure to your personal 
-                 progress. 
+                appreciate life events and new habits. Adding structure to your personal
+                progress.
             </p>
             <p>The link contains all the info about your event so you can
-                bookmark it, send it to people, or whatever else. 
+                bookmark it, send it to people, or whatever else.
             </p>
         </div>
-
+    </div>
+    
+    <div id="wrapper">
         <div id="content">
             <p>It has been</p>
-            <p id="date"></p>
+            <div id="timesinceWrapper">
+                <p id="timesince"></p>
+            </div>
             <p>since</p>
             <p id="event"></p>
             
