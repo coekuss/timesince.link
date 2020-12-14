@@ -329,6 +329,10 @@
             "&d=" + getQueryVariable("d") +
             "&u=" + newUnit;
 
+            if (getQueryVariable("t")) {
+                newQueryString += "&t=t"
+            }
+
             history.replaceState(null, '', '/' + newQueryString) 
 
             document.getElementById("timesince").innerHTML = 
