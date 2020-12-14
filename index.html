@@ -23,6 +23,34 @@
             color: black;
             text-shadow: 0px 0px 1.5px currentColor;
         }
+        #timesinceWrapper {
+            display: grid;
+            place-items: center;
+            justify-content: center;
+            grid-template-columns: 120px auto 120px;
+        }
+        #timesinceWrapper svg {
+            width: 80px;
+            stroke-width: 60;
+            transition: width 0.2s;
+            display: inline-block;
+            cursor: pointer;
+        }
+        #timesinceWrapper svg:hover {
+            width: 90px;
+        }
+        #cycleUnitLeft {
+            grid-column: 1;
+        }
+        #timesince {
+            grid-column: 2;
+            cursor: pointer;
+        }
+        #cycleUnitRight {
+            grid-column: 3;
+            transform: rotate(180deg);
+            z-index: 0;
+        }
         #fadeInWrapper {
             margin: none;
             position: absolute;
@@ -140,13 +168,6 @@
             padding: 10px;
             text-shadow: 0px 0px 1.5px currentColor;
         }
-        select {
-            border: 5px solid black;
-            font-family: sans-serif;
-            font-size: 1em;
-            font-style: italic;
-            text-shadow: 0px 0px 1.5px currentColor;
-        }
         #userEvent {
             resize: none;
             overflow: visible;
@@ -169,34 +190,6 @@
         }
         #generateLinkButton:hover {
             transform: scale(1.05)
-        }
-        #timesinceWrapper {
-            display: grid;
-            place-items: center;
-            justify-content: center;
-            grid-template-columns: 120px auto 120px;
-        }
-        #timesinceWrapper svg {
-            width: 80px;
-            stroke-width: 60;
-            transition: width 0.2s;
-            display: inline-block;
-            cursor: pointer;
-        }
-        #timesinceWrapper svg:hover {
-            width: 90px;
-        }
-        #cycleUnitLeft {
-            grid-column: 1;
-        }
-        #timesince {
-            grid-column: 2;
-            cursor: pointer;
-        }
-        #cycleUnitRight {
-            grid-column: 3;
-            transform: rotate(180deg);
-            z-index: 0;
         }
     </style>
     <script>
