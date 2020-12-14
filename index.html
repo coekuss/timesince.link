@@ -23,6 +23,15 @@
             color: black;
             text-shadow: 0px 0px 1.5px currentColor;
         }
+        #fadeInWrapper {
+            margin: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-color: white;
+            z-index: 10;
+        }
         .fadein {
             background-color: transparent !important;
             transition: 2s;
@@ -67,8 +76,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 10;
-            background-color: white;
+            z-index: 12;
         }
         #about {
             width: 75%;
@@ -130,6 +138,13 @@
             font-style: italic;
             font-size: 0.7em;
             padding: 10px;
+            text-shadow: 0px 0px 1.5px currentColor;
+        }
+        select {
+            border: 5px solid black;
+            font-family: sans-serif;
+            font-size: 1em;
+            font-style: italic;
             text-shadow: 0px 0px 1.5px currentColor;
         }
         #userEvent {
@@ -344,7 +359,7 @@
                     <p><label for="event">What happened?</label></p>
                     <p><textarea class="userText" id="userEvent" rows="2" name="e" required></textarea></p>
                     <p><label for="timesince">When did it happen?</label></p>
-                    <p><input class="userText" id="userDate" type="text" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}" placeholder="M-D-YYYY" name="d" required></p>
+                    <p><input class="userText" id="userDate" type="text" autocomplete="off" pattern="[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}" placeholder="M-D-YYYY" name="d" required></p>
                     <p><input id="generateLinkButton" type="submit" value="Generate Link"></p>
                 </form>
                 `;
@@ -354,8 +369,8 @@
                     timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), getQueryVariable("t"));
                 
             }
-            
-            document.getElementById("aboutwrapper").classList.add("fadein")
+
+            document.getElementById("fadeInWrapper").classList.add("fadein");
         }
     </script>
 </head>
@@ -396,6 +411,8 @@
             </p>
         </div>
     </div>
+
+    <div id="fadeInWrapper"></div>
     
     <div id="wrapper">
         <div id="content">
