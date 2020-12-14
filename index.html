@@ -276,7 +276,8 @@
             }
         }
         function roundTenth(number) {
-            return Math.round(number * 10) / 10
+            var rounded = Math.round(number * 10) / 10
+            return rounded.toFixed(1)
         }
         function cycleUnit(leftOrRight) {
             var unit = getQueryVariable("u");
