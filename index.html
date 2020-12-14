@@ -287,7 +287,7 @@
             "&d=" + getQueryVariable("d") +
             "&u=" + newUnit;
 
-            history.replaceState(null, '', '/index.html' + newQueryString) 
+            history.replaceState(null, '', '/' + newQueryString) 
 
             document.getElementById("timesince").innerHTML = 
             timeSinceDate(newUnit, getQueryVariable("d"), getQueryVariable("t"));
@@ -296,14 +296,14 @@
         function cycleDecimal() {
             if (!getQueryVariable("t") || !getQueryVariable("t") == "f") {
                 var newQueryString = window.location.search + "&t=t";
-                history.replaceState(null, '', '/index.html' + newQueryString) 
+                history.replaceState(null, '', '/' + newQueryString) 
 
                 document.getElementById("timesince").innerHTML =
                     timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), "t");
                 
             } else {
                 var newQueryString = window.location.search.replace("&t=t", "");
-                history.replaceState(null, '', '/index.html' + newQueryString)
+                history.replaceState(null, '', '/' + newQueryString)
 
                 document.getElementById("timesince").innerHTML =
                     timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), false);
