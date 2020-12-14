@@ -287,7 +287,7 @@
             "&d=" + getQueryVariable("d") +
             "&u=" + newUnit;
 
-            history.replaceState(null, '', '/index.html' + newQueryString) 
+            history.replaceState(null, '', '/' + newQueryString) 
 
             document.getElementById("timesince").innerHTML = 
             timeSinceDate(newUnit, getQueryVariable("d"), getQueryVariable("t"));
@@ -299,7 +299,7 @@
                     "&d=" + getQueryVariable("d") +
                     "&u=" + getQueryVariable("u") +
                     "&t=" + "t";
-                history.replaceState(null, '', '/index.html' + newQueryString) 
+                history.replaceState(null, '', '/' + newQueryString) 
 
                 document.getElementById("timesince").innerHTML =
                     timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), "t");
@@ -308,7 +308,7 @@
                 var newQueryString = "?e=" + getQueryVariable("e") +
                     "&d=" + getQueryVariable("d") +
                     "&u=" + getQueryVariable("u");
-                history.replaceState(null, '', '/index.html' + newQueryString)
+                history.replaceState(null, '', '/' + newQueryString)
 
                 document.getElementById("timesince").innerHTML =
                     timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), false);
@@ -364,7 +364,7 @@
                 </div>
             </div>
         
-            <h2><a href="index.html" id="aboutHomeLink">timesince.link</a></h2>
+            <h2><a href="" id="aboutHomeLink">timesince.link</a></h2>
             <p>A tool made by <a href="https://coekuss.com/">Coekuss</a> to help you
                 appreciate life events and new habits. Adding structure to your personal
                 progress.
