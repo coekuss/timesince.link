@@ -66,6 +66,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 100;
         }
         #about {
             width: 75%;
@@ -152,6 +153,35 @@
         #generateLinkButton:hover {
             transform: scale(1.05)
         }
+        #timesinceWrapper {
+            display: grid;
+            place-items: center;
+            justify-content: space-between;
+            justify-items: center;
+            grid-template-columns: 120px auto 120px;
+        }
+        #timesinceWrapper svg {
+            width: 80px;
+            stroke-width: 60;
+            transition: width 0.2s;
+            display: inline-block;
+            cursor: pointer;
+        }
+        #timesinceWrapper svg:hover {
+            width: 90px;
+        }
+        #cycleUnitLeft {
+            grid-column: 1;
+        }
+        #timesince {
+            grid-column: 2;
+            cursor: pointer;
+        }
+        #cycleUnitRight {
+            grid-column: 3;
+            transform: rotate(180deg);
+            z-index: 0;
+        }
     </style>
     <script>
         function getQueryVariable(variable) {
@@ -163,7 +193,11 @@
                 }
                 return (false);
         }
-        function timeSinceDate(timeUnit, userDate) {
+        function timeSinceDate(timeUnit, userDate, tenth) {
+            if (timeUnit == false)  {
+                timeUnit = "days"
+            }
+
             const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
             const oneWeek = oneDay * 7
             const oneMonth = oneDay * 30
@@ -172,24 +206,39 @@
             const dateSplit = userDate.split("-")
 
             // subtract 1 because Date() function has 0-indexed months
-            const userMonth = dateSplit[0] - 1 
-            const userDay = dateSplit[1]
-            const userYear = dateSplit[2]
+            var userMonth = dateSplit[0] - 1 
+            var userDay = dateSplit[1]
+            var userYear = dateSplit[2]
+            var firstDate = new Date(userYear, userMonth, userDay);
+            var secondDate = Date.now();
 
-            const firstDate = new Date(userYear, userMonth, userDay);
-            const secondDate = Date.now();
-
-            const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+            var diffDays = Math.abs((firstDate - secondDate) / oneDay);
 
             switch(timeUnit) {
                 case "days":
-                    return diffDays + " days"
+                    if (tenth && tenth != "f") {
+                        return roundTenth(diffDays) + " days"
+                    } else {
+                        return Math.round(diffDays) + " days"
+                    } 
                 case "weeks":
-                    return Math.round(diffDays / 7) + " weeks"
+                    if (tenth && tenth != "f") {
+                        return roundTenth(diffDays / 7) + " weeks"
+                    } else {
+                        return Math.round(diffDays / 7) + " weeks"
+                    } 
                 case "months":
-                    return Math.round(diffDays / 30) + " months"
+                    if (tenth && tenth != "f") {
+                        return roundTenth(diffDays / 30) + " months"
+                    } else {
+                        return Math.round(diffDays / 30) + " months"
+                    } 
                 case "years":
-                    return Math.round(diffDays / 365) + " years"
+                    if (tenth && tenth != "f") {
+                        return roundTenth(diffDays / 365) + " years"
+                    } else {
+                        return Math.round(diffDays / 365) + " years"
+                    } 
             }
             
         }
@@ -200,11 +249,71 @@
                 document.getElementById("about").classList.add("show")
             }
         }
-        // use this function to round to 1 decimal place
-        // https://stackoverflow.com/questions/7342957/how-do-you-round-to-1-decimal-place-in-javascript
-        function round(value, precision) {
-            var multiplier = Math.pow(10, precision || 0);
-            return Math.round(value * multiplier) / multiplier;
+        function roundTenth(number) {
+            return Math.round(number * 10) / 10
+        }
+        function cycleUnit(leftOrRight) {
+            var unit = getQueryVariable("u");
+            var allUnits = ["days", "weeks", "months", "years"];
+
+            var unitIndex;
+            allUnits.forEach(function(item, index, arr) {
+                if (unit == item) {
+                    unitIndex = index;
+                } else if (unit == false) {
+                    unitIndex = 0;
+                }
+            })
+
+            if (leftOrRight == "left") {
+                var newUnitIndex;
+                if (unitIndex == 0) {
+                    newUnitIndex = 3;
+                } else {
+                    newUnitIndex = unitIndex - 1;
+                }
+            } else if (leftOrRight == "right") {
+                var newUnitIndex;
+                if (unitIndex == 3) {
+                    newUnitIndex = 0;
+                } else {
+                    newUnitIndex = unitIndex + 1;
+                }
+            }
+            
+            var newUnit = allUnits[newUnitIndex];
+
+            var newQueryString = "?e=" + getQueryVariable("e") +
+            "&d=" + getQueryVariable("d") +
+            "&u=" + newUnit;
+
+            history.replaceState(null, '', '/index.html' + newQueryString) 
+
+            document.getElementById("timesince").innerHTML = 
+            timeSinceDate(newUnit, getQueryVariable("d"), getQueryVariable("t"));
+
+        }
+        function cycleDecimal() {
+            if (!getQueryVariable("t") || !getQueryVariable("t") == "f") {
+                var newQueryString = "?e=" + getQueryVariable("e") +
+                    "&d=" + getQueryVariable("d") +
+                    "&u=" + getQueryVariable("u") +
+                    "&t=" + "t";
+                history.replaceState(null, '', '/index.html' + newQueryString) 
+
+                document.getElementById("timesince").innerHTML =
+                    timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), "t");
+                
+            } else {
+                var newQueryString = "?e=" + getQueryVariable("e") +
+                    "&d=" + getQueryVariable("d") +
+                    "&u=" + getQueryVariable("u");
+                history.replaceState(null, '', '/index.html' + newQueryString)
+
+                document.getElementById("timesince").innerHTML =
+                    timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), false);
+            }
+            
         }
         window.onload = function() {
             if (window.location.search == "") {
@@ -219,11 +328,8 @@
                 `;
             } else {
                 document.getElementById("event").innerHTML = getQueryVariable("e").replace(/\+/g, " ");
-                if (getQueryVariable("u") == false) {
-                    document.getElementById("timesince").innerHTML = timeSinceDate("days", getQueryVariable("d"))
-                } else {
-                    document.getElementById("timesince").innerHTML = timeSinceDate(getQueryVariable("u"), getQueryVariable("d"))
-                }
+                document.getElementById("timesince").innerHTML = 
+                    timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), getQueryVariable("t"));
                 
             }
             
@@ -273,7 +379,15 @@
         <div id="content">
             <p>It has been</p>
             <div id="timesinceWrapper">
-                <p id="timesince"></p>
+                <svg id="cycleUnitLeft" onclick="cycleUnit('left')" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+                    stroke-linejoin="round" stroke-miterlimit="2">
+                    <path d="M199.069.051L-.123 199.244 199.069 398.43M-.123 199.244h533.466" fill="none" />
+                </svg>
+                <span id="timesince" onclick="cycleDecimal()"></span>
+                <svg id="cycleUnitRight" onclick="cycleUnit('right')" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+                    stroke-linejoin="round" stroke-miterlimit="2">
+                    <path d="M199.069.051L-.123 199.244 199.069 398.43M-.123 199.244h533.466" fill="none" />
+                </svg>
             </div>
             <p>since</p>
             <p id="event"></p>
