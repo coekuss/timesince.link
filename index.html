@@ -214,30 +214,55 @@
 
             var diffDays = Math.abs((firstDate - secondDate) / oneDay);
 
+            var unitPlural
             switch(timeUnit) {
                 case "days":
-                    if (tenth && tenth != "f") {
+                    if (tenth) {
                         return roundTenth(diffDays) + " days"
                     } else {
-                        return Math.round(diffDays) + " days"
+                        var num = Math.round(diffDays)
+                        if (num == 1) {
+                            unitPlural = " day"
+                        } else {
+                            unitPlural = " days"
+                        }
+                        return num + unitPlural
                     } 
                 case "weeks":
-                    if (tenth && tenth != "f") {
+                    if (tenth) {
                         return roundTenth(diffDays / 7) + " weeks"
                     } else {
-                        return Math.round(diffDays / 7) + " weeks"
+                        var num = Math.round(diffDays / 7)
+                        if (num == 1) {
+                            unitPlural = " week"
+                        } else {
+                            unitPlural = " weeks"
+                        }
+                        return num + unitPlural
                     } 
                 case "months":
-                    if (tenth && tenth != "f") {
+                    if (tenth) {
                         return roundTenth(diffDays / 30) + " months"
                     } else {
-                        return Math.round(diffDays / 30) + " months"
+                        var num = Math.round(diffDays / 30)
+                        if (num == 1) {
+                            unitPlural = " month"
+                        } else {
+                            unitPlural = " months"
+                        }
+                        return num + unitPlural
                     } 
                 case "years":
-                    if (tenth && tenth != "f") {
+                    if (tenth) {
                         return roundTenth(diffDays / 365) + " years"
                     } else {
-                        return Math.round(diffDays / 365) + " years"
+                        var num = Math.round(diffDays / 365)
+                        if (num == 1) {
+                            unitPlural = " year"
+                        } else {
+                            unitPlural = " years"
+                        }
+                        return num + unitPlural
                     } 
             }
             
