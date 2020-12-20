@@ -1,5 +1,5 @@
 window.onload = function () {
-    if (window.location.search == "") {
+    if (!getQueryVariable("e") || !getQueryVariable("d")) {
         document.getElementById("content").innerHTML = `
                 <form method="GET">
                     <p><label for="event">What happened?</label></p>
