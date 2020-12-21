@@ -10,7 +10,35 @@ window.onload = function () {
                 </form>
                 `;
     } else {
-        document.getElementById("event").innerHTML = getQueryVariable("e").replace(/\+/g, " ");
+        document.getElementById("event").innerHTML = getQueryVariable("e")
+            .replace(/\+/g, " ")
+            .replace(/%20/g, " ")
+            .replace(/%21/g, "!")
+            .replace(/%21/g, `"`)
+            .replace(/%23/g, "#")
+            .replace(/%24/g, "$")
+            .replace(/%C2%A3/g, "£")
+            .replace(/%25/g, "%")
+            .replace(/%26/g, "&")
+            .replace(/%27/g, "'")
+            .replace(/%28/g, "(")
+            .replace(/%29/g, ")")
+            .replace(/%2A/g, "*")
+            .replace(/%2B/g, "+")
+            .replace(/%2C/g, ",")
+            .replace(/%2D/g, "-")
+            .replace(/%2E/g, ".")
+            .replace(/%2F/g, "/")
+            .replace(/%3A/g, ":")
+            .replace(/%3B/g, ";")
+            .replace(/%3D/g, "=")
+            .replace(/%3F/g, "?")
+            .replace(/%40/g, "@")
+            .replace(/%5B/g, "[")
+            .replace(/%5C/g, "\\")
+            .replace(/%5F/g, "_")
+            .replace(/%7B/g, "{")
+            .replace(/%7D/g, "}");
         document.getElementById("timesince").innerHTML =
             timeSinceDate(getQueryVariable("u"), getQueryVariable("d"), getQueryVariable("t"));
 
