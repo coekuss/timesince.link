@@ -44,6 +44,12 @@ window.onload = function () {
 
     }
 
+   document.onkeydown = function (event) {
+        if (event.key == 'Escape' && document.getElementById("about").classList.contains("show")) {
+            toggleAbout();
+        }
+    };
+
     document.getElementById("fadeInWrapper").classList.add("fadein");
 }
 
@@ -132,9 +138,11 @@ function timeSinceDate(timeUnit, userDate, tenth) {
 }
 function toggleAbout() {
     if (document.getElementById("about").classList.contains("show")) {
-        document.getElementById("about").classList.remove("show")
+        document.getElementById("about").classList.remove("show");
+        document.getElementById("aboutwrapper").classList.remove("show");
     } else {
-        document.getElementById("about").classList.add("show")
+        document.getElementById("about").classList.add("show");
+        document.getElementById("aboutwrapper").classList.add("show");
     }
 }
 
