@@ -117,10 +117,16 @@ svg {
 #aboutHomeLink {
     text-decoration: none;
     color: black;
-    transition: letter-spacing 0.2s;
+    transition: 0.2s;
 }
 #aboutHomeLink:hover {
     letter-spacing: 2px;
+}
+#aboutHomeLink #logoHand {
+    transition: 0.2s;
+}
+#aboutHomeLink:hover #logoHand {
+    transform: rotate(180deg)
 }
 .show {
     opacity: 1 !important;
