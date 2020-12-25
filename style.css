@@ -103,6 +103,7 @@ svg {
     width: 75%;
     height: 85%;
     max-width: 1000px;
+    position: relative;
     overflow-y: auto;
     background-color: white;
     border-radius: 10px;
